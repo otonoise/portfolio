@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #f7f7f7;
+      color: #111;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ===== トップサムネ ===== */
+    .hero {
+      width: 100%;
+      height: 60vh;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero img {
+      max-width: 90%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 24px; /* ← 角丸 */
+    }
+
+    /* ===== 共通 ===== */
+    .container {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 24px;
+      font-weight: 600;
+       color: #fe98c9;
+    }
+
+    /* ===== 自己紹介 ===== */
+    .about {
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      margin-bottom: 80px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .about p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #333333;
+    }
+
+    /* ===== Works（白背景） ===== */
+    .works-section {
+      background: #fff;
+      padding: 80px 0;
+    }
+
+       .works {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .works {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .works {
+        grid-template-columns: 1fr;
+      }
+    }
+
+        .work {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(254, 152, 201, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .work:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px rgba(254, 152, 201, 0.8);
+    }
+
+    .work:hover .work-title {
+      color: #ff5fa2;
+    }
+
+    .work-detail summary {
+  font-size: 13px;
+  color: #ff7eb3;
+  cursor: pointer;
+  margin: 8px 0;
+  list-style: none;
+}
+
+.work-detail summary::-webkit-details-marker {
+  display: none;
+}
+
+.work-detail summary::after {
+  content: "＋";
+  margin-left: 6px;
+}
+
+.work-detail[open] summary::after {
+  content: "−";
+}
+
+.work-detail p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #444;
+  margin: 8px 0;
+}
+.work-detail summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.work-detail summary::after {
+  content: "▶";
+  transition: transform 0.3s ease;
+}
+
+.work-detail[open] summary::after {
+  transform: rotate(90deg);
+}
+
+
+
+
+    .thumbnail {
+      position: relative;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      display: block;
+    }
+
+    .thumbnail::after {
+      content: "▶";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      color: rgba(255,255,255,0.9);
+      pointer-events: none;
+    }
+
+    .work-content {
+      padding: 16px;
+    }
+
+    .work-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .work-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      color: #444;
+    }
+
+    .work-tools {
+      font-size: 12px;
+      color: #777;
+    }
+
+    /* ===== Contact（白背景） ===== */
+    footer {
+      background: #fff;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    footer h2 {
+      margin-bottom: 24px;
+      font-size: 20px;
+    }
+
+    .contact a {
+      display: block;
+      font-size: 14px;
+      margin: 10px 0;
+      color: #555;
+    }
+
+    .contact a:hover {
+      color: #000000;
+    }
+        /* ===== 作品タグ ===== */
+    .work-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(254, 152, 201, 0.15);
+      color: #fe98c9;
+      font-weight: 500;
+    }
+
+    .tag.new {
+  background: #ff7eb3;
+  color: #fff;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- トップ -->
+  <div class="hero">
+    <img src="ポートフォリオサムネ改.jpg" alt="Portfolio Thumbnail">
+  </div>
+
+  <!-- About -->
+  <div class="container">
+    <div class="about">
+      <h2>About</h2>
+      <p>
+        モーショングラフィックスを中心に、MV・映像作品の制作を行っています。<br>
+      映像業界のモーショングラフィッカー／コンポジッター志望です。<br>
+      モーショングラフィックスやテキストアニメーションを用いたMV制作に携わりたいと考えています。<br>
+      大学ではモーショングラフィックスに限らず、実写映像、ビジュアルデザイン、プログラミングなど幅広い分野に触れており、こうした経験や知識を制作に活かしていきたいです。枠にとらわれず、新しい表現に挑戦し続けられるクリエイターを目指しています。<br>
+      2027年3月卒業予定。<br>
+      <br>
+      ◯ 現在の活動<br>
+      ゼミ活動の一環として、毎月1本、After Effectsを使用したMVを制作しています。<br>
+      「立体感をどう演出するか」「飽きさせない展開とは何か」など毎回テーマ（課題）を設け、表現方法の研究や技術向上に継続して取り組んでいます。
+
+
+      </p>
+    </div>
+  </div>
+
+  <!-- Works -->
+  <div class="works-section">
+  <div class="container">
+    <h2>Works</h2>
+
+   <div class="works">
+
+  <!-- ===== 作品9（最新） ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=HlXnTYe5QbA" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/HlXnTYe5QbA/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag new">NEW</span>
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">ジングルベルがとまらない</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV</div>
+       <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+      “かわいい×クリスマス”をテーマに制作しました。<br>
+      赤と白をメインカラーに、ハートやチェック柄を散りばめることで、ポップで愛らしい世界観を演出しています。<br>
+      飽きのこない展開を目指し、背景やシーンをテンポよく細かく切り替える構成にしました。<br>
+      またどのシーンも平面的にならないよう、シャドウの強弱や画面前方のレイヤーにはブラーと速度調整を加えるなど、奥行き表現にもこだわっています。
+    </p>
+
+    <p>
+      形式：FHD 0:35<br>
+      編集・モーショングラフィックス<br>
+      制作期間：2週間
+    </p>
+
+  </details>
+      <div class="work-tools">使用ソフト：After Effects　Illustrator</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品8 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=CXQjcN5yl20" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/CXQjcN5yl20/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">仮装狂騒曲</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV。</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+    ハロウィンをテーマに、映像全体の雰囲気やインパクトを優先したMVです。<br>
+    歪み・グリッチ・ノイズを画面全体に乗せることで、不安定で狂気的な質感を演出。<br>
+    さらに歌詞のテキストに激しいカメラワークを加え、読みやすさよりも“叩きつけられるような迫力”を重視しました。<br>
+    視覚的な刺激とテンポ感で曲の激しさと不気味さを表現しています。
+    </p>
+
+    <p>
+      形式：FHD 0:21<br>
+      編集・モーショングラフィックス<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects　Illustrator</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品7 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=b7F-KoyQJTI" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/b7F-KoyQJTI/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">心予報</div>
+      <div class="work-desc">実写×モーショングラフィックスのMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+     実写映像とモーショングラフィックスを融合させたMV作品です。<br>
+     撮影監督から編集までを担当し、ロトブラシを用いて人物と背景を切り離し、世界が徐々にピンクへ染まっていく表現に挑戦しました。<br>
+     実写とCGを違和感なく馴染ませるため、色味や質感の統一を意識し、青春らしいテンポ感と透明感のあるビジュアルを目指しています。
+    </p>
+
+    <p>
+      形式：4K 1:21<br>
+      編集・モーショングラフィックス・撮影ディレクション<br>
+      制作期間：3ヶ月
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects Premier Prp</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品6 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=eWkEcnf2mQ4" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/eWkEcnf2mQ4/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+        <span class="tag">ロゴデザイン</span>
+      </div>
+      <div class="work-title">ロりろっきゅんロぼ♡</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+      動画制作だけでなくロゴ制作にも挑戦した作品です。<br>
+      電子音風の曲調とタイトルの「ロボ」からイメージを広げ、ゲームのUIのようなフレームを配置し、映像全体にドット風エフェクトを加えることでレトロゲーム風の質感を表現しました。<br>
+      一方で、可愛らしい雰囲気を損なわないよう、ピンクをイメージカラーに設定し、猫の絵文字やハートのモチーフを散りばめてポップさを演出。<br>
+      「かわいい×電子×ゲーム感」で映像全体を統一しています。
+    </p>
+
+    <p>
+      形式：FHD 0:28<br>
+      編集・モーショングラフィックス・ロゴデザイン<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects　Illustrator</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品5 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=RDnZA71AS1I" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/RDnZA71AS1I/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">PLATONIC GIRL</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+      イラスト専攻の学生からイラストの使用許可を得て使用しました。<br>
+      イラストのキャラクターそのものを主役として魅せるMVに挑戦しました。<br>
+      楽曲の印象からロック・サイバーを掛け合わせた世界観をイメージし、幾何学模様やネオンの背景を使って疾走感と刺激的な空気感を表現。<br>
+      球面エフェクトを用いることで画面に曲線的な歪みや奥行きを加え、立体的な映像へ仕上げています。<br>
+    </p>
+
+    <p>
+      形式：FHD 0:38<br>
+      編集・モーショングラフィックス<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects Illustrator</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品4 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=GGj2ls9wrzA" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/GGj2ls9wrzA/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">サマータイムレコード</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+    イラスト専攻の学生からイラストの使用許可を得て使用しました。<br>
+    イラストと自分で撮影した実写背景を馴染ませることをテーマに制作したMVです。<br>
+    ライトや影を調整し、正面からの光・逆光といったライティング演出を複数試すことで、キャラクターが実際にそこにいるような質感を追求しました。<br>
+    夏をテーマに、青・緑を基調とした色使いで爽やかな世界観を統一。<br>
+    実写素材のカメラが異なることによる繋ぎの違和感を避けるため、カラコレで一本の映像として自然に見えるよう仕上げています。
+    </p>
+
+    <p>
+      形式：FHD 0:35<br>
+      編集・モーショングラフィックス<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品3 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=ZpglVKte5qk" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/ZpglVKte5qk/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">群青</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+      4人でリレー形式のMV編集に挑戦しました。<br>
+      青とキラキラをキーワードに、曲全体のイメージである青春や学校モチーフを画面に取り入れました。<br>
+      背景の映像は、実写の素材をスローにし、色調補正とブラーを重ねて幻想的な表現になるよう意識しました。<br>
+      サビに向けて盛り上がりを演出するため、華やかなグローエフェクトをかけたりダイナミックなカメラワークを重ねて、エモーショナルな高揚感を意識しています。
+    </p>
+
+    <p>
+      形式：FHD 1:07<br>
+      編集・モーショングラフィックス<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects Premier Pro</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品2 ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=YHsmE5tNOWc" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/YHsmE5tNOWc/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+        
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">猫猫的宇宙論</div>
+      <div class="work-desc">モーショングラフィックスを用いたMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+      既存のMV、イラストの雰囲気を大切にしながら、自分らしいアレンジを加えた作品です。<br>
+      イラストの髪型をアレンジしたり、キャラクターの髪が揺れるアニメーションを取り入れることで、静止画にとどまらない生命感・動き・立体感を演出しました。<br>
+      画面が平たい印象にならないよう、光・色・レイアウトの重なりによって奥行き感のある構図に仕上げています。<br>
+      また、作品全体を“かわいさ × 宇宙”というテーマで統一し、ピンクの宇宙空間や星のフレームなど、ファンタジックな世界観を演出しました。<br>
+      原作の魅力を損なわず、自分ならではの感性を乗せた表現に挑戦した作品です。
+    </p>
+
+    <p>
+      形式：FHD 0:38<br>
+      編集・モーショングラフィックス<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects　Illustrator</div>
+    </div>
+  </div>
+
+  <!-- ===== 作品1（最初） ===== -->
+  <div class="work">
+    <a href="https://www.youtube.com/watch?v=VE1C82XOaw0" target="_blank">
+      <div class="thumbnail">
+        <img src="https://img.youtube.com/vi/VE1C82XOaw0/hqdefault.jpg" alt="">
+      </div>
+    </a>
+    <div class="work-content">
+      <div class="work-tags">
+        <span class="tag">MV</span>
+      </div>
+      <div class="work-title">lemonade</div>
+      <div class="work-desc">3DCG・モーショングラフィックスを用いたMV</div>
+      <details class="work-detail">
+    <summary>詳細を見る</summary>
+
+    <p>
+      3DCGモデルを使用したMV制作に初挑戦した作品です。<br>
+      歌詞がないパートでも映像のリズムが途切れないよう、モーショングラフィックスや速度のあるカメラワークを組み合わせ、見続けたくなるテンポ感を意識しました。<br>
+      3DCGならではの奥行き・影・質感を活かしつつ、ポップで爽やかな世界観にまとめています。
+    </p>
+
+    <p>
+      形式：FHD 0:09<br>
+      編集・モーショングラフィックス・3DCG<br>
+      制作期間：2週間
+    </p>
+  </details>
+
+      <div class="work-tools">使用ソフト：After Effects blender</div>
+    </div>
+  </div>
+
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+  <!-- Contact -->
+  <footer>
+    <h2>Contact</h2>
+    <div class="contact">
+      <a href="mailto:otonoise26@gmail.com">otonoise26@gmail.com</a>
+      <a href="https://x.com/donutoicne?s=21" target="_blank">X / Twitter</a>
+      <a href="vivivit.com/otopo" target="_blank">Vivivit</a>
+    </div>
+  </footer>
+
+</body>
+</html>
